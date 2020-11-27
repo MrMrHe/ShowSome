@@ -14,7 +14,7 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_centerInParent="true"
@@ -31,11 +31,18 @@
                     android:singleLine="false"
                     android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/image_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
+                <ScrollView
+                    android:id="@+id/image_view_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+                    <ImageView
+                        android:id="@+id/image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+                </ScrollView>
+
 
                 <WebView
                     android:id="@+id/web_view"
@@ -64,7 +71,7 @@
                     app:title_textsize="12sp"
                     tools:background="@color/colorLine" />
 
-            </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
         <View

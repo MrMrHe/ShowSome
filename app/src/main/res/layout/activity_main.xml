@@ -48,12 +48,14 @@
                     android:id="@+id/web_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
                     android:visibility="gone" />
 
-                <VideoView
+                <com.show.showsome.view.MyJzvdStd
                     android:id="@+id/video_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
                     android:visibility="gone" />
 
                 <com.youth.banner.Banner

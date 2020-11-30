@@ -1,6 +1,7 @@
 package com.show.showsome;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 
 import android.annotation.SuppressLint;
@@ -9,14 +10,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.bumptech.glide.Glide;
 import com.show.showsome.databinding.ActivityMainBinding;
 import com.show.showsome.utils.PerfectClickListener;
+import com.show.showsome.view.MyJzvdStd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isImageClick = false;
 
-    private String webUrl = "http://www.baidu.com";
+
+    private MyJzvdStd myJzvdStd;
+
+    private String webUrl = "http://www.showinfo.com.cn/index.html";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.buttonImageVideo.setOnClickListener(listener);
         mBinding.buttonVideo.setOnClickListener(listener);
         mBinding.buttonVideoVideo.setOnClickListener(listener);
+        myJzvdStd = mBinding.videoView;
         initWebView();
     }
 
@@ -86,6 +94,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.button_video:// 视频
+                    show(mBinding.videoView);
+                    mBinding.videoView.setUp("http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4"
+                            , "饺子快长大");
+                    Glide.with(MainActivity.this).load("http://jzvd-pic.nathen.cn/jzvd-pic/1bb2ebbe-140d-4e2e-abd2-9e7e564f71ac.png")
+                            .into(mBinding.videoView.thumbImageView);
+                    long time = myJzvdStd.getDuration();
+                    long time1 = myJzvdStd.getVideoTime();
+                    Log.d("hxj", "MainActivity: onNoDoubleClick: time is " + time + " time1 is " + time1);
                     break;
                 case R.id.button_image_image:// 图片、图片
                     break;

@@ -15,11 +15,13 @@
             android:layout_weight="1">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="30dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginEnd="30dp"
+                android:layout_marginBottom="50dp"
                 android:orientation="horizontal"
                 tools:ignore="UselessParent">
 
@@ -36,6 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
+
                     <ImageView
                         android:id="@+id/image_view"
                         android:layout_width="wrap_content"
@@ -48,30 +51,19 @@
                     android:id="@+id/web_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
                     android:visibility="gone" />
 
                 <com.show.showsome.view.MyJzvdStd
                     android:id="@+id/video_view"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_centerInParent="true"
                     android:visibility="gone" />
 
-                <com.youth.banner.Banner
+                <com.show.showsome.banner.ChangeBanner
                     android:id="@+id/banner_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    app:delay_time="5000"
-                    app:image_scale_type="center_crop"
-                    app:indicator_height="9dp"
-                    app:indicator_margin="3dp"
-                    app:indicator_width="9dp"
-                    app:is_auto_play="true"
-                    app:title_height="28dp"
-                    app:title_textsize="12sp"
-                    tools:background="@color/colorLine" />
+                    android:layout_height="300dp"
+                    android:visibility="gone" />
 
             </RelativeLayout>
         </RelativeLayout>
@@ -81,13 +73,10 @@
             android:layout_height="2dp"
             android:background="@color/black" />
 
-        <GridLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:columnCount="3"
-            android:orientation="horizontal"
-            android:rowCount="3">
+            android:layout_weight="1">
 
             <Button
                 android:id="@+id/button_text"
@@ -102,7 +91,7 @@
                 android:id="@+id/button_web"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:text="网页" />
 
@@ -110,14 +99,16 @@
                 android:id="@+id/button_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
                 android:text="图片" />
 
             <Button
                 android:id="@+id/button_video"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/button_text"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:text="视频" />
@@ -126,6 +117,8 @@
                 android:id="@+id/button_image_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/button_web"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:text="图片图片" />
@@ -134,20 +127,21 @@
                 android:id="@+id/button_image_video"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_below="@+id/button_image"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
                 android:text="图片视频" />
 
             <Button
                 android:id="@+id/button_video_video"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/button_video"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:text="视频视频" />
-
-
-        </GridLayout>
+        </RelativeLayout>
 
 
     </LinearLayout>

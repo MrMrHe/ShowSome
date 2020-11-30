@@ -1,7 +1,6 @@
 package com.show.showsome;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 
 import android.annotation.SuppressLint;
@@ -10,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -18,19 +16,29 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.bumptech.glide.Glide;
+import com.show.showsome.banner.ChangeBanner;
+import com.show.showsome.banner.adapter.MediaVideoBannerAdapter;
+import com.show.showsome.banner.manager.BannerVideoManager;
+import com.show.showsome.bean.ResourceBean;
 import com.show.showsome.databinding.ActivityMainBinding;
 import com.show.showsome.utils.PerfectClickListener;
 import com.show.showsome.view.MyJzvdStd;
+import com.youth.banner.config.IndicatorConfig;
+import com.youth.banner.indicator.CircleIndicator;
+
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
 
     private boolean isWebViewShow = false;
-
     private boolean isImageClick = false;
 
 
@@ -38,11 +46,36 @@ public class MainActivity extends AppCompatActivity {
 
     private String webUrl = "http://www.showinfo.com.cn/index.html";
 
+    private List<ResourceBean> dataList;
+    private MediaVideoBannerAdapter mAdapter;
+    private BannerVideoManager mBannerVideoManager;
+
+    @BindView(R.id.banner_view)
+    ChangeBanner banner;
+
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        unbinder = ButterKnife.bind(this);
+
         initListen();
+
+    }
+
+    private void initBanner(int type) {
+        initDataList(type);
+        mAdapter = new MediaVideoBannerAdapter(this, dataList);
+        banner.isAutoLoop(false);
+        banner.setAdapter(mAdapter).
+                setIndicator(new CircleIndicator(this))
+                .setIndicatorGravity(IndicatorConfig.Direction.CENTER);
+        mBannerVideoManager = new BannerVideoManager(this, banner, mAdapter, dataList);
+        mBannerVideoManager.setPageChangeMillis(5000);
+        mBannerVideoManager.setVideoPlayLoadWait(500);
+
     }
 
     private void initListen() {
@@ -95,19 +128,28 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.button_video:// 视频
                     show(mBinding.videoView);
-                    mBinding.videoView.setUp("http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4"
-                            , "饺子快长大");
+                    mBinding.videoView
+                            .setUp("http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4"
+                                    , "饺子快长大");
                     Glide.with(MainActivity.this).load("http://jzvd-pic.nathen.cn/jzvd-pic/1bb2ebbe-140d-4e2e-abd2-9e7e564f71ac.png")
                             .into(mBinding.videoView.thumbImageView);
-                    long time = myJzvdStd.getDuration();
-                    long time1 = myJzvdStd.getVideoTime();
-                    Log.d("hxj", "MainActivity: onNoDoubleClick: time is " + time + " time1 is " + time1);
+//                    long time = myJzvdStd.getDuration();
+//                    long time1 = myJzvdStd.getVideoTime();
+//                    Log.d("hxj", "MainActivity: onNoDoubleClick: time is " + time + " time1 is " + time1);
                     break;
                 case R.id.button_image_image:// 图片、图片
+                    initBanner(1);
+                    mBannerVideoManager.onResume();
+                    show(mBinding.bannerView);
                     break;
                 case R.id.button_image_video:// 图片、视频
+
+
                     break;
                 case R.id.button_video_video:// 视频、视频
+                    initBanner(2);
+                    mBannerVideoManager.onResume();
+                    show(mBinding.bannerView);
                     break;
 
                 default:
@@ -130,6 +172,62 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    //    /**
+//     * 设置banner图
+//     */
+//    public void showBannerView() {
+//        ArrayList<String> bannerImages = new ArrayList<String>();
+//        bannerImages.add("https://wanandroid.com/blogimgs/184b499f-dc69-41f1-b519-ff6cae530796.jpeg");
+//        bannerImages.add("https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png");
+//        bannerImages.add("https://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png");
+//        bannerImages.add("https://www.wanandroid.com/blogimgs/90c6cc12-742e-4c9f-b318-b912f163b8d0.png");
+//        ArrayList<String> mBannerTitle = new ArrayList<String>();
+//        mBannerTitle.add("Android开发简历怎么写？让你的简历通过率提高200%！");
+//        mBannerTitle.add("我们新增了一个常用导航Tab~");
+//        mBannerTitle.add("一起来做个App吧");
+//        mBannerTitle.add("flutter 中文社区 ");
+//        Uri path1 = Uri.parse("https://v-cdn.zjol.com.cn/123468.mp4");
+//        //Uri path2 = Uri.parse("https://v-cdn.zjol.com.cn/276982.mp4");
+//        Uri imageUrl = Uri.parse("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579170629919&di=fc03a214795a764b4094aba86775fb8f&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D4061015229%2C3374626956%26fm%3D214%26gp%3D0.jpg");
+
+//
+//    }
+
+    /**
+     * 数据源请自行替换
+     * MediaVideoBannerAdapter也需要修改数据类型
+     */
+    private void initDataList(int type) {
+        dataList = new ArrayList<>();
+        ResourceBean bean;
+        switch (type) {
+            case 1:
+                bean = new ResourceBean();
+                bean.setType(1);
+                bean.setUrl("https://wanandroid.com/blogimgs/184b499f-dc69-41f1-b519-ff6cae530796.jpeg");
+                dataList.add(bean);
+                bean = new ResourceBean();
+                bean.setType(1);
+                bean.setUrl("https://model-player.oss-cn-beijing.aliyuncs.com/bg_banner_wb.png");
+                dataList.add(bean);
+                break;
+            case 2:
+                bean = new ResourceBean();
+                bean.setType(2);
+                bean.setUrl("http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4");
+                dataList.add(bean);
+                bean = new ResourceBean();
+
+                bean.setType(2);
+                bean.setUrl("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+                dataList.add(bean);
+                break;
+
+            default:
+                break;
+        }
+    }
+
     private void show(View view) {
         List<View> views = new ArrayList<View>();
         views.add(mBinding.textView);
@@ -146,6 +244,18 @@ public class MainActivity extends AppCompatActivity {
         }
         isWebViewShow = false;
         mBinding.imageViewArea.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mBannerVideoManager.onPause();
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mBannerVideoManager.onDetachedFromWindow();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -218,6 +328,8 @@ public class MainActivity extends AppCompatActivity {
             mBinding.webView.destroy();
             isWebViewShow = false;
         }
+        unbinder.unbind();
+
         super.onDestroy();
     }
 

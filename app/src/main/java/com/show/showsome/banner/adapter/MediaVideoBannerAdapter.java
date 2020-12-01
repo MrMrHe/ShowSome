@@ -60,9 +60,13 @@ public class MediaVideoBannerAdapter extends BaseBannerAdapter<ResourceBean, Rec
         switch (viewType) {
             case 1:
                 ImageHolder imageHolder = (ImageHolder) holder;
-                Glide.with(imageHolder.itemView)
-                        .load(data.getUrl())
-                        .into(imageHolder.imageView);
+                if (data.getUrl() != null) {
+                    Glide.with(imageHolder.itemView)
+                            .load(data.getUrl())
+                            .into(imageHolder.imageView);
+                }else if (null!=data.getDrawable()){
+                    imageHolder.imageView.setImageDrawable(data.getDrawable());
+                }
                 break;
             case 2:
                 VideoHolder videoHolder = (VideoHolder) holder;
@@ -78,18 +82,18 @@ public class MediaVideoBannerAdapter extends BaseBannerAdapter<ResourceBean, Rec
         }
     }
 
-    public VideoHolder getVideoHolder(Integer position){
+    public VideoHolder getVideoHolder(Integer position) {
         return videoHolderMap.get(position);
     }
 
 
-    public void stopVideo(){
-        for (Integer key : videoHolderMap.keySet()){
+    public void stopVideo() {
+        for (Integer key : videoHolderMap.keySet()) {
             try {
                 if (getVideoHolder(key) != null)
                     getVideoHolder(key).player.onVideoReset();
-            }catch (Throwable e){
-                Log.e("VideoBannerError", "停止视频播放出错 "+e.getLocalizedMessage());
+            } catch (Throwable e) {
+                Log.e("VideoBannerError", "停止视频播放出错 " + e.getLocalizedMessage());
             }
         }
     }
